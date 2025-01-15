@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { CryptographyAdapter } from '@/core/adapters/cryptography/cryptography-adapter';
-import { User } from '@/core/domain/entities/user/User';
+import { User } from '@/core/domain/entities/User';
 import { UserRepository } from '@/core/domain/repositories/user/UserRepository';
 import { Either, left, right } from '@/core/either';
 
@@ -10,6 +10,7 @@ import { UserAlreadyExistsException } from './errors/user-already-exists-excepti
 interface CreateUserUseCaseRequest {
   name: string;
   email: string;
+  cpfCnpj: string;
   password: string;
 }
 
@@ -28,6 +29,7 @@ export class CreateUserUseCase {
   async execute({
     name,
     email,
+    cpfCnpj,
     password,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const userAlreadyExists = await this.userRepository.findByEmail(email);
@@ -41,6 +43,7 @@ export class CreateUserUseCase {
     const user = User.create({
       name,
       email,
+      cpfCnpj,
       password: hash,
     });
 

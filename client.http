@@ -1,12 +1,48 @@
-@baseUrl = http://localhost:3333
-// @authToken = {{authenticate.response.body.access_token}}
+@baseUrl = http://localhost:3333/api
+@authToken = {{authenticate.response.body.access_token}}
 
 # @name create_account
 POST {{baseUrl}}/user
 Content-Type: application/json
+x-api-key: G5dNGLixUdy4xh4X2zWlSFVa8WVgPBwPGNCi0eX37Ws/OeHGsdBCdJS6X5AYkM/h0ldidFWfm0vyKw3HyL71zA==
 
 {
   "name": "John Doe",
-  "email": "john@doe.com",
-  "password": "passwordTest123"
+  "email": "john_doe@test.com",
+  "cpfCnpj": "00630094047",
+  "password": "johnDoePassword"
 }
+
+###
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+x-api-key: G5dNGLixUdy4xh4X2zWlSFVa8WVgPBwPGNCi0eX37Ws/OeHGsdBCdJS6X5AYkM/h0ldidFWfm0vyKw3HyL71zA==
+
+{
+  "email": "john_doe@test.com",
+  "password": "johnDoePassword"
+}
+
+###
+# @name create-farm
+POST {{baseUrl}}/farm
+Content-Type: application/json
+x-api-key: G5dNGLixUdy4xh4X2zWlSFVa8WVgPBwPGNCi0eX37Ws/OeHGsdBCdJS6X5AYkM/h0ldidFWfm0vyKw3HyL71zA==
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Fazenda Família Doe",
+  "city": "Minas Gerais",
+  "state": "MG",
+  "totalArea": 1000,
+  "arableArea": 600,
+  "vegetationArea": 400
+}
+
+###
+# @name get-all-farms
+GET {{baseUrl}}/farm
+Content-Type: application/json
+x-api-key: G5dNGLixUdy4xh4X2zWlSFVa8WVgPBwPGNCi0eX37Ws/OeHGsdBCdJS6X5AYkM/h0ldidFWfm0vyKw3HyL71zA==
+Authorization: Bearer {{authToken}}

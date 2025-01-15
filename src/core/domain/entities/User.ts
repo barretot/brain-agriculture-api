@@ -4,6 +4,7 @@ export class User {
   id?: string;
   name!: string;
   email!: string;
+  cpfCnpj!: string;
   password!: string;
 
   constructor(props: User) {
@@ -14,8 +15,6 @@ export class User {
   }
 
   static create(props: User): User {
-    const user = new User(props);
-
-    return user;
+    return new User(props);
   }
 }

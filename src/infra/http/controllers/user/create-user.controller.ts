@@ -6,12 +6,14 @@ import {
   HttpStatus,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiOperation,
+  ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -19,16 +21,19 @@ import { CreateUserUseCase } from '@/use-cases/user/create-user.use-case';
 import { UserAlreadyExistsException } from '@/use-cases/user/errors/user-already-exists-exception';
 
 import { CreateUserDto } from '../../dto/user/create-user.dto';
+import { ApiKeyAuthGuard } from '../../guards/api-key-auth.guard';
 import { HttpCreatedUserResponse } from '../../swagger/responses/user/create-user.response';
 import { HttpBadRequestUserResponse } from '../../swagger/responses/user/http-bad-request.response';
 import { HttpConflictUserResponse } from '../../swagger/responses/user/http-conflict.response';
 
-@ApiTags('user')
+@ApiTags('User')
+@ApiSecurity('api-key')
 @Controller('/user')
 export class CreateUserController {
   constructor(private createUserUseCase: CreateUserUseCase) {}
 
   @Post()
+  @UseGuards(ApiKeyAuthGuard)
   @ApiOperation({ summary: 'Create user from db' })
   @ApiCreatedResponse({
     description: 'User Created',

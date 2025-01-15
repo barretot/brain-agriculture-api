@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "cpf_cnpj" SET DATA TYPE text;

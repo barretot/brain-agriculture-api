@@ -37,7 +37,7 @@ export class GetCropByIdController {
 
   @Get(':cropId')
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
-  @ApiOperation({ summary: 'Get harvests by id from db' })
+  @ApiOperation({ summary: 'Get crop by id from db' })
   @ApiOkResponse(CropGetByIdSchema)
   @ApiNotFoundResponse({
     description: 'Not Found',

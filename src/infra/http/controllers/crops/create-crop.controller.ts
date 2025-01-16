@@ -39,7 +39,7 @@ export class CreateCropController {
 
   @Post(':harvestsId')
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
-  @ApiOperation({ summary: 'Create farm from db' })
+  @ApiOperation({ summary: 'Create crop from db' })
   @ApiCreatedResponse({
     description: 'Crop Created',
     type: HttpCreatedCropResponse,

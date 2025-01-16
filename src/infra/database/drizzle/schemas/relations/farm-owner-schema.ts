@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 
 import { farms, users } from '../tables';
 
-export const farmOwner /* Proprietario + fazenda */ = pgTable('farm_owner', {
+export const farmOwner = pgTable('farm_owner', {
   id: text('id')
     .$defaultFn(() => randomUUID())
     .primaryKey(),

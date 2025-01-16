@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 
 import { farms, harvests } from '../tables';
 
-export const farmHarvests /* Safras + Fazenda */ = pgTable('farm_harvests', {
+export const farmHarvests = pgTable('farm_harvests', {
   id: text('id')
     .$defaultFn(() => randomUUID())
     .primaryKey(),

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-import { Crop } from '@/core/domain/entities/Crop';
 import { CropsRepository } from '@/core/domain/repositories/crops/CropsRepository';
 import { Either, left, right } from '@/core/either';
 
@@ -13,7 +12,7 @@ interface GetFarmByIdUseCaseRequest {
 
 type GetFarmByIdUseCaseResponse = Either<
   NotFoundCropByIdException,
-  { crop: Crop }
+  { crop: Record<string, unknown> }
 >;
 
 @Injectable()

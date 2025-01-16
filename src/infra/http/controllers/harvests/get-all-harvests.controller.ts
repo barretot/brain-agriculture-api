@@ -36,7 +36,7 @@ export class GetAllHarvestsController {
 
   @Get()
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
-  @ApiOperation({ summary: 'Get all Harvests from db' })
+  @ApiOperation({ summary: 'Get all harvests from db' })
   @ApiOkResponse({
     description: 'Get all Harvests success',
     type: HttpOkGetAllHarvestsResponse,

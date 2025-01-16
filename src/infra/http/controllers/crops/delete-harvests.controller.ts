@@ -37,9 +37,9 @@ export class DeleteCropController {
 
   @Delete(':cropId')
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
-  @ApiOperation({ summary: 'Delete harvests by id from db' })
+  @ApiOperation({ summary: 'Delete crop by id from db' })
   @ApiOkResponse({
-    description: 'Delete harvests success',
+    description: 'Delete crop success',
     type: HttpDeletedCropResponse,
   })
   @ApiNotFoundResponse({

@@ -1,7 +1,7 @@
 import { text, timestamp, pgTable, doublePrecision } from 'drizzle-orm/pg-core';
 import { randomUUID } from 'node:crypto';
 
-export const crops /* Culturas Plantadas */ = pgTable('crops', {
+export const crops = pgTable('crops', {
   id: text('id')
     .$defaultFn(() => randomUUID())
     .primaryKey(),

@@ -41,7 +41,7 @@ export class CreateHarvestsController {
 
   @Post(':id')
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
-  @ApiOperation({ summary: 'Create farm from db' })
+  @ApiOperation({ summary: 'Create harvests from db' })
   @ApiCreatedResponse({
     description: 'Harvests Created',
     type: HttpCreatedHarvestsResponse,

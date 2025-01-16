@@ -14,6 +14,6 @@ export class HttpNotFoundFarmResponse {
   })
   message!: string;
 
-  @ApiProperty({ example: 'Bad Request' })
+  @ApiProperty({ example: 'Not Found' })
   error!: string;
 }

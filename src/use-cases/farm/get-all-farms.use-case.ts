@@ -16,7 +16,7 @@ type GetAllFarmsUseCaseResponse = Either<
 >;
 
 @Injectable()
-export class GetAllFarsmUseCase {
+export class GetAllFarmsUseCase {
   constructor(private farmRepository: FarmRepository) {}
 
   async execute({

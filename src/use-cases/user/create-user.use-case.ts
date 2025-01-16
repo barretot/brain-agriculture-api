@@ -5,6 +5,7 @@ import { User } from '@/core/domain/entities/User';
 import { UserRepository } from '@/core/domain/repositories/user/UserRepository';
 import { Either, left, right } from '@/core/either';
 
+import { UserAlreadyExistsCpfCnpjException } from './errors/user-already-exists-cpf-cnpj-exception';
 import { UserAlreadyExistsException } from './errors/user-already-exists-exception';
 
 interface CreateUserUseCaseRequest {
@@ -15,7 +16,7 @@ interface CreateUserUseCaseRequest {
 }
 
 type CreateUserUseCaseResponse = Either<
-  UserAlreadyExistsException /* | OthersErrors */,
+  UserAlreadyExistsException | UserAlreadyExistsCpfCnpjException,
   { user: User }
 >;
 
@@ -34,8 +35,15 @@ export class CreateUserUseCase {
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const userAlreadyExists = await this.userRepository.findByEmail(email);
 
+    const userAlreadyExistsCpfCnpj =
+      await this.userRepository.findByCpfCnpj(cpfCnpj);
+
     if (userAlreadyExists) {
       return left(new UserAlreadyExistsException(email));
+    }
+
+    if (userAlreadyExistsCpfCnpj) {
+      return left(new UserAlreadyExistsCpfCnpjException());
     }
 
     const hash = await this.cryptography.hash(password);

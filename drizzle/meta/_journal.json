@@ -22,6 +22,20 @@
       "when": 1736955415252,
       "tag": "0002_lyrical_nightmare",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1737023259891,
+      "tag": "0003_harsh_shadow_king",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1737023611874,
+      "tag": "0004_bitter_kat_farrell",
+      "breakpoints": true
     }
   ]
 }

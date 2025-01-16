@@ -18,12 +18,13 @@ import {
 } from '@nestjs/swagger';
 
 import { CreateUserUseCase } from '@/use-cases/user/create-user.use-case';
+import { UserAlreadyExistsCpfCnpjException } from '@/use-cases/user/errors/user-already-exists-cpf-cnpj-exception';
 import { UserAlreadyExistsException } from '@/use-cases/user/errors/user-already-exists-exception';
 
 import { CreateUserDto } from '../../dto/user/create-user.dto';
 import { ApiKeyAuthGuard } from '../../guards/api-key-auth.guard';
 import { HttpCreatedUserResponse } from '../../swagger/responses/user/create-user.response';
-import { HttpBadRequestUserResponse } from '../../swagger/responses/user/http-bad-request.response';
+import { HttpConflictUserCpfCnpjResponse } from '../../swagger/responses/user/http-conflict-cpf-cnpj.response';
 import { HttpConflictUserResponse } from '../../swagger/responses/user/http-conflict.response';
 
 @ApiTags('User')
@@ -44,8 +45,8 @@ export class CreateUserController {
     type: HttpConflictUserResponse,
   })
   @ApiBadRequestResponse({
-    description: 'Bad Request',
-    type: HttpBadRequestUserResponse,
+    description: 'Conflict',
+    type: HttpConflictUserCpfCnpjResponse,
   })
   async handle(@Res() res, @Body() body: CreateUserDto) {
     const response = await this.createUserUseCase.execute(body);
@@ -55,6 +56,8 @@ export class CreateUserController {
 
       switch (error.constructor) {
         case UserAlreadyExistsException:
+          throw new ConflictException(error.message);
+        case UserAlreadyExistsCpfCnpjException:
           throw new ConflictException(error.message);
         default:
           throw new BadRequestException(error.message);

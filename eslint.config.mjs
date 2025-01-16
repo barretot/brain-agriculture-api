@@ -55,6 +55,7 @@ export default [
         },
       ],
 
+      '@typescript-eslint/no-explicit-any': 'warn',
       'import/no-duplicates': 'error',
       'import/no-unresolved': 'error',
       'import/newline-after-import': ['error', { count: 1 }],

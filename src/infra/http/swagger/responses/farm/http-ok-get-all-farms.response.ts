@@ -28,9 +28,6 @@ export class HttpOkGetAllFarmsResponse {
   @ApiProperty({ example: HttpStatus.CREATED })
   statusCode!: number;
 
-  @ApiProperty({ example: 'Farm created' })
-  message!: string;
-
   @ApiProperty({ type: [FarmDto] })
   farms!: FarmDto[];
 }

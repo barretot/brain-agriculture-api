@@ -7,7 +7,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
-  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
@@ -20,12 +19,11 @@ import {
 import { CurrentUser } from '@/infra/auth/jwt/current-user.decorator';
 import { TokenSchema } from '@/infra/auth/jwt/token-schema';
 import { NotFoundFarmsException } from '@/use-cases/farm/errors/not-found-farms-exception';
-import { GetAllFarsmUseCase } from '@/use-cases/farm/get-all-farms.use-case';
+import { GetAllFarmsUseCase } from '@/use-cases/farm/get-all-farms.use-case';
 
 import { ApiKeyAuthGuard } from '../../guards/api-key-auth.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { HttpInternalServerErrorResponse } from '../../swagger/responses/@shared/http-internal-server-error-response';
-import { HttpBadRequestFarmResponse } from '../../swagger/responses/farm/http-bad-request.response';
 import { HttpNotFoundFarmResponse } from '../../swagger/responses/farm/http-not-found-farms.response';
 import { HttpOkGetAllFarmsResponse } from '../../swagger/responses/farm/http-ok-get-all-farms.response';
 
@@ -33,19 +31,15 @@ import { HttpOkGetAllFarmsResponse } from '../../swagger/responses/farm/http-ok-
 @ApiSecurity('api-key')
 @ApiBearerAuth()
 @Controller('/farm')
-export class GetAllFarmController {
-  constructor(private getAllfarmUseCase: GetAllFarsmUseCase) {}
+export class GetAllFarmsController {
+  constructor(private getAllfarmsUseCase: GetAllFarmsUseCase) {}
 
   @Get()
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
-  @ApiOperation({ summary: 'Create farm from db' })
+  @ApiOperation({ summary: 'Get all farms from db' })
   @ApiOkResponse({
     description: 'Get all farms success',
     type: HttpOkGetAllFarmsResponse,
-  })
-  @ApiBadRequestResponse({
-    description: 'Bad Request',
-    type: HttpBadRequestFarmResponse,
   })
   @ApiNotFoundResponse({
     description: 'Not Found',
@@ -56,7 +50,7 @@ export class GetAllFarmController {
     type: HttpInternalServerErrorResponse,
   })
   async handle(@Res() res, @CurrentUser() logedUser: TokenSchema) {
-    const response = await this.getAllfarmUseCase.execute({
+    const response = await this.getAllfarmsUseCase.execute({
       userId: logedUser.sub,
     });
 

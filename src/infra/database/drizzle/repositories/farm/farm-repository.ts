@@ -59,11 +59,21 @@ export class DrizzleFarmRepository implements FarmRepository {
       farmId: props.id,
     });
   }
-  async delete(farmId: string): Promise<void> {
-    await this.drizzleService.db.delete(farms).where(eq(farms.id, farmId));
+  async delete(userId: string, farmId: string): Promise<null | void> {
+    const result = await this.drizzleService.db
+      .select()
+      .from(farms)
+      .innerJoin(farmOwner, eq(farms.id, farmOwner.farmId)) // Faz o join com a tabela farmOwner
+      .where(and(eq(farms.id, farmId), eq(farmOwner.userId, userId))); // Verifica se o userId corresponde
+
+    if (result.length === 0) {
+      return null;
+    }
 
     await this.drizzleService.db
       .delete(farmOwner)
       .where(eq(farmOwner.farmId, farmId));
+
+    await this.drizzleService.db.delete(farms).where(eq(farms.id, farmId));
   }
 }

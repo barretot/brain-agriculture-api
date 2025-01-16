@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 
 export class Harvests {
   id?: string;
-  year!: Date;
+  year!: string;
 
   constructor(props: Harvests) {
     if (!props.id) {

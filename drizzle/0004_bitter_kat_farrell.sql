@@ -1,0 +1,1 @@
+ALTER TABLE "harvests" ALTER COLUMN "year" SET DATA TYPE text;

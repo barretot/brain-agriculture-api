@@ -13,8 +13,8 @@ import {
   farms,
   harvests,
   harvestsCrop,
-  users, // Importa a tabela de usuários
-} from './infra/database/drizzle/schemas';
+  users,
+} from '../schemas';
 
 async function seed() {
   const pool = new Pool({
@@ -86,7 +86,6 @@ async function seed() {
         },
       ]);
 
-      // Criar usuários das fazendas
       const owner1Id = randomUUID();
       const owner2Id = randomUUID();
 
@@ -95,7 +94,6 @@ async function seed() {
         { id: owner2Id, userId: user2Id, farmId: farm2Id },
       ]);
 
-      // Criar safras
       const harvest1Id = randomUUID();
       const harvest2Id = randomUUID();
 
@@ -104,7 +102,6 @@ async function seed() {
         { id: harvest2Id, year: '2024' },
       ]);
 
-      // Associar fazendas a safras
       const farmHarvest1Id = randomUUID();
       const farmHarvest2Id = randomUUID();
 
@@ -113,7 +110,6 @@ async function seed() {
         { id: farmHarvest2Id, farmId: farm2Id, harvestsId: harvest2Id },
       ]);
 
-      // Criar culturas
       const crop1Id = randomUUID();
       const crop2Id = randomUUID();
 
@@ -133,18 +129,21 @@ async function seed() {
         {
           id: crop1Id,
           cropName:
-            cropNames[faker.number.int({ min: 0, max: cropNames.length - 1 })], // Nome aleatório da lista
-          area: faker.number.float({ min: 50, max: 300 }),
+            cropNames[faker.number.int({ min: 0, max: cropNames.length - 1 })],
+          area: parseFloat(
+            faker.number.float({ min: 50, max: 300 }).toFixed(2),
+          ),
         },
         {
           id: crop2Id,
           cropName:
-            cropNames[faker.number.int({ min: 0, max: cropNames.length - 1 })], // Nome aleatório da lista
-          area: faker.number.float({ min: 50, max: 300 }),
+            cropNames[faker.number.int({ min: 0, max: cropNames.length - 1 })],
+          area: parseFloat(
+            faker.number.float({ min: 50, max: 300 }).toFixed(2),
+          ),
         },
       ]);
 
-      // Associar safras a culturas
       const harvestCrop1Id = randomUUID();
       const harvestCrop2Id = randomUUID();
 

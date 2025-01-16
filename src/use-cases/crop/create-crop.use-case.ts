@@ -4,7 +4,14 @@ import { Crop } from '@/core/domain/entities/Crop';
 import { CropsRepository } from '@/core/domain/repositories/crops/CropsRepository';
 import { Either, left, right } from '@/core/either';
 
+import { LimitExceededException } from './errors/limit-exceeded-exception';
 import { NotFoundHarvestsByIdException } from './errors/not-found-harvests-by-id-exception';
+
+interface ResponseLimitExceeded {
+  limitExceeded: boolean;
+  arableArea: string;
+  area: string;
+}
 
 interface CropProps {
   area: number;
@@ -18,7 +25,7 @@ interface CreateCropUseCaseRequest {
 }
 
 type CreateCropUseCaseResponse = Either<
-  NotFoundHarvestsByIdException,
+  NotFoundHarvestsByIdException | LimitExceededException,
   { harvests: string }
 >;
 
@@ -41,6 +48,12 @@ export class CreateCropUseCase {
 
     if (response === null) {
       return left(new NotFoundHarvestsByIdException(harvestsId));
+    }
+
+    if (!response.ok) {
+      const { arableArea, area } = response as ResponseLimitExceeded;
+
+      return left(new LimitExceededException(arableArea, area));
     }
 
     return right({

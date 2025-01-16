@@ -22,6 +22,9 @@ export class DrizzleCropsRepository implements CropsRepository {
       .select({
         farmId: farms.id,
         farmName: farms.name,
+        totalArea: farms.totalArea,
+        arableArea: farms.arableArea,
+        vegetationArea: farms.vegetationArea,
         harvestId: harvests.id,
         year: harvests.year,
         cropId: crops.id,
@@ -44,6 +47,9 @@ export class DrizzleCropsRepository implements CropsRepository {
           farm: {
             id: row.farmId,
             name: row.farmName,
+            area: row.totalArea,
+            arableArea: row.arableArea,
+            vegetationArea: row.vegetationArea,
           },
 
           harvests: [],
@@ -157,7 +163,7 @@ export class DrizzleCropsRepository implements CropsRepository {
     userId: string,
     harvestId: string,
     props: Crop,
-  ): Promise<null | void> {
+  ): Promise<null | Record<string, any>> {
     const result = await this.drizzleService.db
       .select()
       .from(farmOwner)
@@ -174,6 +180,16 @@ export class DrizzleCropsRepository implements CropsRepository {
       return null;
     }
 
+    const { arableArea } = result.map((item) => item.farm)[0];
+
+    if (props.area > arableArea) {
+      return {
+        ok: false,
+        area: props.area,
+        arableArea,
+      };
+    }
+
     await this.drizzleService.db.insert(crops).values({
       id: props.id,
       cropName: props.cropName,
@@ -185,5 +201,9 @@ export class DrizzleCropsRepository implements CropsRepository {
       cropId: String(props.id),
       harvestsId: String(harvestId),
     });
+
+    return {
+      ok: true,
+    };
   }
 }

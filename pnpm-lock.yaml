@@ -89,6 +89,9 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
+      swagger-ui-dist:
+        specifier: ^5.18.2
+        version: 5.18.2
     devDependencies:
       '@eslint/js':
         specifier: ^9.18.0

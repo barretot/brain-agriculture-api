@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="<%= nonce %>"></script>
+  <style nonce="<%= nonce %>">
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -21,25 +21,25 @@
     }
 
     .charts {
-      display: flex; /* Alinha os gráficos em linha */
-      flex-direction: row; /* Força alinhamento horizontal */
-      justify-content: space-around; /* Distribui os gráficos uniformemente */
-      align-items: flex-start; /* Alinha os gráficos ao topo */
-      gap: 20px; /* Espaçamento entre os gráficos */
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: flex-start;
+      gap: 20px;
     }
 
     .chart-container {
-      width: 300px; /* Largura fixa do gráfico */
-      height: 300px; /* Altura fixa do gráfico */
-      border: 1px solid #ddd; /* Opcional: Adiciona borda para visualização */
+      width: 600px;
+      height: 600px;
     }
 
     canvas {
-      display: block; /* Remove espaços extras */
-      width: 100%; /* Ocupa toda a largura do container */
-      height: 100%; /* Ocupa toda a altura do container */
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   </style>
+
 </head>
 <body>
   <h1>Dashboard</h1>
@@ -58,10 +58,19 @@
     </div>
   </div>
 
-  <script>
+  <script nonce="<%= nonce %>">
     const farmsByState = <%- JSON.stringify(farmsByState) %>;
     const cropsByType = <%- JSON.stringify(cropsByType) %>;
     const landUsage = <%- JSON.stringify(landUsage) %>;
+
+    // Gerar cores dinâmicas
+    const generateColors = (length) => {
+      const colors = [];
+      for (let i = 0; i < length; i++) {
+        colors.push(`hsl(${(i * 360) / length}, 70%, 60%)`); // Gera cores com base no espectro HSL
+      }
+      return colors;
+    };
 
     new Chart(document.getElementById('farmsByStateChart'), {
       type: 'pie',
@@ -70,13 +79,26 @@
         datasets: [
           {
             data: farmsByState.map((item) => item.count),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+            backgroundColor: generateColors(farmsByState.length), // Gera cores únicas
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              padding: 10,
+              boxWidth: 20,
+              font: {
+                size: 12,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -87,13 +109,26 @@
         datasets: [
           {
             data: cropsByType.map((item) => item.totalArea),
-            backgroundColor: ['#4BC0C0', '#FF6384', '#FF9F40'],
+            backgroundColor: generateColors(cropsByType.length), // Gera cores únicas
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              padding: 10,
+              boxWidth: 20,
+              font: {
+                size: 12,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -104,15 +139,31 @@
         datasets: [
           {
             data: [landUsage[0].totalArableArea, landUsage[0].totalVegetationArea],
-            backgroundColor: ['#36A2EB', '#FFCE56'],
+            backgroundColor: generateColors(2), // Duas cores: Arable e Vegetation
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              padding: 10,
+              boxWidth: 20,
+              font: {
+                size: 12,
+              },
+            },
+          },
+        },
       },
     });
   </script>
+
+
+
 </body>
 </html>

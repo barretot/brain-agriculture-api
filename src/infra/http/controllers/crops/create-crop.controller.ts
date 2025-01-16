@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpStatus,
+  InternalServerErrorException,
   NotFoundException,
   Param,
   Post,
@@ -9,6 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
@@ -21,6 +24,7 @@ import {
 import { CurrentUser } from '@/infra/auth/jwt/current-user.decorator';
 import { TokenSchema } from '@/infra/auth/jwt/token-schema';
 import { CreateCropUseCase } from '@/use-cases/crop/create-crop.use-case';
+import { LimitExceededException } from '@/use-cases/crop/errors/limit-exceeded-exception';
 import { NotFoundFarmByIdException } from '@/use-cases/farm/errors/not-found-farm-by-id-exception';
 
 import { CreateCropDto } from '../../dto/crop/create-crop.dto';
@@ -29,6 +33,7 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { HttpInternalServerErrorResponse } from '../../swagger/responses/@shared/http-internal-server-error-response';
 import { HttpNotFoundHarvestsResponse } from '../../swagger/responses/@shared/http-not-found-harvests.response';
 import { HttpCreatedCropResponse } from '../../swagger/responses/crops/create-crop.response';
+import { HttpBadRequestLimitExceededResponse } from '../../swagger/responses/crops/limit-exceeded.response';
 
 @ApiTags('Crops')
 @ApiSecurity('api-key')
@@ -47,6 +52,10 @@ export class CreateCropController {
   @ApiNotFoundResponse({
     description: 'Not Found',
     type: HttpNotFoundHarvestsResponse,
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+    type: HttpBadRequestLimitExceededResponse,
   })
   @ApiInternalServerErrorResponse({
     description: 'Internal Server Error',
@@ -70,6 +79,10 @@ export class CreateCropController {
       switch (error.constructor) {
         case NotFoundFarmByIdException:
           throw new NotFoundException(error.message);
+        case LimitExceededException:
+          throw new BadRequestException(error.message);
+        default:
+          throw new InternalServerErrorException(error.message);
       }
     }
 

@@ -10,7 +10,7 @@ export abstract class CropsRepository {
     userId: string,
     harvestsId: string,
     props: Crop,
-  ): Promise<null | void>;
+  ): Promise<null | Record<string, any>>;
 
   abstract delete(userId: string, cropId: string): Promise<null | void>;
 }

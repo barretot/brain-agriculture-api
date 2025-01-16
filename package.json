@@ -18,7 +18,7 @@
     "drizzle:pull": "drizzle-kit pull",
     "drizzle:migrate": "drizzle-kit migrate",
     "drizzle:studio": "drizzle-kit studio",
-    "seed": "ts-node src/run-seed.ts",
+    "seed": "ts-node src/infra/database/drizzle/seeds/run-seed.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
@@ -59,7 +59,8 @@
     "passport-jwt": "^4.0.1",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "swagger-ui-dist": "^5.18.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",

@@ -5,6 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
+import crypto from 'node:crypto';
 import { join } from 'path';
 
 import { AppModule } from './app.module';
@@ -22,7 +23,17 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.use(helmet());
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", 'https://cdn.jsdelivr.net'],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        fontSrc: ["'self'", 'https://fonts.googleapis.com'],
+        imgSrc: ["'self'", 'data:'],
+      },
+    }),
+  );
 
   app.enableCors({
     origin: '*',
@@ -30,10 +41,12 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Authorization,x-api-key',
   });
 
-  app.use((req, reply, next) => {
-    reply.header(
+  app.use((req, res, next) => {
+    const nonce = crypto.randomBytes(16).toString('base64');
+    res.locals.nonce = nonce;
+    res.setHeader(
       'Content-Security-Policy',
-      "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';",
+      `default-src 'self'; script-src 'self' 'nonce-${nonce}' https://cdn.jsdelivr.net; style-src 'self' 'nonce-${nonce}';`,
     );
     next();
   });

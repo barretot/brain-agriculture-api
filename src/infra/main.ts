@@ -1,9 +1,11 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
+import { join } from 'path';
 
 import { AppModule } from './app.module';
 import { Env } from './env/env';
@@ -11,7 +13,7 @@ import { HttpExceptionFilter } from './http/interceptors/http-exception.filter';
 import { LoggingInterceptor } from './http/interceptors/logging.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -24,9 +26,22 @@ async function bootstrap() {
 
   app.enableCors({
     origin: '*',
-    methods: 'GET,HEAD,POST,OPTIONS',
-    allowedHeaders: '*',
+    methods: 'GET,POST',
+    allowedHeaders: 'Content-Type,Authorization,x-api-key',
   });
+
+  app.use((req, reply, next) => {
+    reply.header(
+      'Content-Security-Policy',
+      "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';",
+    );
+    next();
+  });
+
+  app.setBaseViewsDir(join(__dirname, 'views'));
+
+  app.setViewEngine('ejs');
+
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
 

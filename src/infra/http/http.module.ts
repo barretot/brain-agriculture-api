@@ -7,6 +7,7 @@ import { CreateCropUseCase } from '@/use-cases/crop/create-crop.use-case';
 import { DeleteCropUseCase } from '@/use-cases/crop/delete-crop-use-case';
 import { GetAllCropsUseCase } from '@/use-cases/crop/get-all-crops.use-case';
 import { GetCropByIdUseCase } from '@/use-cases/crop/get-crop-by-id.use-case';
+import { CreateDashBoardUseCase } from '@/use-cases/dashboard/create-dashboard.use-case';
 import { CreateFarmUseCase } from '@/use-cases/farm/create-farm.use-case';
 import { DeleteFarmUseCase } from '@/use-cases/farm/delete-farm-use-case';
 import { GetAllFarmsUseCase } from '@/use-cases/farm/get-all-farms.use-case';
@@ -27,6 +28,7 @@ import { CreateCropController } from './controllers/crops/create-crop.controller
 import { DeleteCropController } from './controllers/crops/delete-harvests.controller';
 import { GetAllCropsController } from './controllers/crops/get-all-crops.controller';
 import { GetCropByIdController } from './controllers/crops/get-crop-by-id.controller';
+import { CreateDashBoardController } from './controllers/dashboard/create-dashboard.controller';
 import { CreateFarmController } from './controllers/farm/create-farm.controller';
 import { DeleteFarmController } from './controllers/farm/delete-farm.controller';
 import { GetAllFarmsController } from './controllers/farm/get-all-farms.controller';
@@ -62,6 +64,7 @@ import { CreateUserController } from './controllers/user/create-user.controller'
     GetAllCropsController,
     GetCropByIdController,
     DeleteCropController,
+    CreateDashBoardController,
     DeleteHarvetsController,
   ],
   providers: [
@@ -78,6 +81,7 @@ import { CreateUserController } from './controllers/user/create-user.controller'
     GetAllCropsUseCase,
     GetCropByIdUseCase,
     DeleteCropUseCase,
+    CreateDashBoardUseCase,
     CreateAuthenticateUseCase,
   ],
 })

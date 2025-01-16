@@ -14,7 +14,7 @@ import * as schema from './schemas';
 @Injectable()
 export class DrizzleService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger();
-  private readonly pool: Pool;
+  readonly pool: Pool;
   public readonly db: NodePgDatabase<typeof schema>;
 
   constructor(private readonly configService: EnvService) {

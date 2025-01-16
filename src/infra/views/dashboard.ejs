@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .charts {
+      display: flex; /* Alinha os gráficos em linha */
+      flex-direction: row; /* Força alinhamento horizontal */
+      justify-content: space-around; /* Distribui os gráficos uniformemente */
+      align-items: flex-start; /* Alinha os gráficos ao topo */
+      gap: 20px; /* Espaçamento entre os gráficos */
+    }
+
+    .chart-container {
+      width: 300px; /* Largura fixa do gráfico */
+      height: 300px; /* Altura fixa do gráfico */
+      border: 1px solid #ddd; /* Opcional: Adiciona borda para visualização */
+    }
+
+    canvas {
+      display: block; /* Remove espaços extras */
+      width: 100%; /* Ocupa toda a largura do container */
+      height: 100%; /* Ocupa toda a altura do container */
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <p>Total Farms: <%= totalFarms %></p>
+  <p>Total Hectares: <%= totalHectares %></p>
+
+  <div class="charts">
+    <div class="chart-container">
+      <canvas id="farmsByStateChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="cropsByTypeChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="landUsageChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const farmsByState = <%- JSON.stringify(farmsByState) %>;
+    const cropsByType = <%- JSON.stringify(cropsByType) %>;
+    const landUsage = <%- JSON.stringify(landUsage) %>;
+
+    new Chart(document.getElementById('farmsByStateChart'), {
+      type: 'pie',
+      data: {
+        labels: farmsByState.map((item) => item.state),
+        datasets: [
+          {
+            data: farmsByState.map((item) => item.count),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+
+    new Chart(document.getElementById('cropsByTypeChart'), {
+      type: 'pie',
+      data: {
+        labels: cropsByType.map((item) => item.cropName),
+        datasets: [
+          {
+            data: cropsByType.map((item) => item.totalArea),
+            backgroundColor: ['#4BC0C0', '#FF6384', '#FF9F40'],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+
+    new Chart(document.getElementById('landUsageChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Arable Area', 'Vegetation Area'],
+        datasets: [
+          {
+            data: [landUsage[0].totalArableArea, landUsage[0].totalVegetationArea],
+            backgroundColor: ['#36A2EB', '#FFCE56'],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+  </script>
+</body>
+</html>

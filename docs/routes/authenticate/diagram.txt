@@ -1,0 +1,19 @@
+
+    sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/sessions)
+    participant Service as CreateAuthenticateUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição POST /api/sessions (email, senha)
+    API->>Service: Verifica credenciais (email, senha)
+    Service->>DB: Consulta no banco por email e se a senha é igual
+    DB-->>Service: Retorna resultado (usuário encontrado ou não)
+    alt Usuário encontrado
+        Service->>API: Gera access token
+        API-->>User: Retorna 200 OK com access token
+    else Usuário não encontrado
+        Service->>API: Credenciais inválidas
+        API-->>User: Retorna 401 Unauthorized
+    end
+

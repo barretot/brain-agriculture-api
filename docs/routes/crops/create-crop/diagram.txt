@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/crops/${harvestId})
+    participant UseCase as CreateCropUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição POST /api/crops/${harvestId} (payload + ID do usuário logado)
+    API->>UseCase: Verifica se a safra (${harvestId}) pertence ao usuário logado
+    UseCase->>DB: Consulta safra pelo harvestId e verifica o ID do usuário associado
+    DB-->>UseCase: Retorna safra (se encontrada e válida) ou null
+    alt Safra não encontrada ou não pertence ao usuário
+        UseCase->>API: Retorna erro (Safra não encontrada)
+        API-->>User: Retorna 404 Not Found
+    else Safra encontrada e pertence ao usuário
+        UseCase->>DB: Insere a nova cultura (crop) para a safra com os dados do payload
+        DB-->>UseCase: Retorna confirmação de criação
+        UseCase->>API: Cultura criada com sucesso
+        API-->>User: Retorna 201 Created com detalhes da cultura
+    end

@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/harvests/${harvestId})
+    participant UseCase as GetHarvestByIdUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição GET /api/harvests/${harvestId} (ID do usuário logado)
+    API->>UseCase: Solicita safra pelo harvestId e verifica se pertence ao usuário logado
+    UseCase->>DB: Consulta safra pelo harvestId e verifica o ID do usuário associado
+    DB-->>UseCase: Retorna safra (se encontrada e válida) ou null
+    alt Safra não encontrada ou não pertence ao usuário
+        UseCase->>API: Retorna erro (Safra não encontrada)
+        API-->>User: Retorna 404 Not Found
+    else Safra encontrada e pertence ao usuário
+        UseCase->>API: Retorna detalhes da safra
+        API-->>User: Retorna 200 OK com os dados da safra
+    end

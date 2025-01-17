@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/farm)
+    participant UseCase as CreateFarmUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição POST /api/farm (payload + token de autenticação)
+    API->>API: Valida token de autenticação
+    alt Token inválido
+        API-->>User: Retorna 401 Unauthorized
+    else Token válido
+        API->>UseCase: Cria fazenda com ID do usuário logado
+        UseCase->>DB: Insere a fazenda com ID do usuário no banco de dados
+        DB-->>UseCase: Retorna sucesso no cadastro
+        UseCase->>API: Fazenda criada com sucesso
+        API-->>User: Retorna 201 Created
+    end

@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/dashboard)
+    participant UseCase as CreateDashBoardUseCase
+    participant DB as PostgreSQL
+    participant Renderer as Static Page Renderer
+
+    User->>API: Requisição GET /api/dashboard
+    API->>UseCase: Solicita informações para o dashboard
+    UseCase->>DB: Consulta total de fazendas cadastradas
+    DB-->>UseCase: Retorna total de fazendas
+    UseCase->>DB: Consulta total de hectares registrados
+    DB-->>UseCase: Retorna total de hectares
+    UseCase->>DB: Consulta total por estado
+    DB-->>UseCase: Retorna dados por estado
+    UseCase->>DB: Consulta total por cultura plantada
+    DB-->>UseCase: Retorna dados por cultura
+    UseCase->>DB: Consulta área por uso do solo (agricultável e vegetação)
+    DB-->>UseCase: Retorna dados de uso do solo
+    UseCase->>API: Retorna dados agregados do dashboard
+    API->>Renderer: Gera página estática com gráficos
+    Renderer-->>API: Página estática gerada
+    API-->>User: Retorna 200 OK com URL da página estática ou HTML direto

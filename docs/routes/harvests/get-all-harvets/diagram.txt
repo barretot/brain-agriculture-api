@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/harvests)
+    participant UseCase as GetAllHarvestsUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição GET /api/harvests (ID do usuário logado)
+    API->>UseCase: Solicita todas as safras das fazendas associadas ao usuário logado
+    UseCase->>DB: Consulta todas as safras das fazendas vinculadas ao ID do usuário
+    DB-->>UseCase: Retorna lista de safras
+    UseCase->>API: Retorna lista de safras
+    API-->>User: Retorna 200 OK com a lista de safras

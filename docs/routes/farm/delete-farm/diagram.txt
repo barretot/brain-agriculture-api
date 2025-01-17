@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/farm/${farmId})
+    participant UseCase as DeleteFarmUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição DELETE /api/farm/${farmId} (ID do usuário logado)
+    API->>UseCase: Verifica se a fazenda pertence ao usuário (${farmId} e userId)
+    UseCase->>DB: Consulta fazenda pelo farmId e verifica o ID do usuário associado
+    DB-->>UseCase: Retorna a fazenda (se encontrada e válida) ou null
+    alt Fazenda não encontrada ou não pertence ao usuário
+        UseCase->>API: Retorna erro (Fazenda não encontrada)
+        API-->>User: Retorna 404 Not Found
+    else Fazenda encontrada e pertence ao usuário
+        UseCase->>DB: Deleta a fazenda pelo farmId
+        DB-->>UseCase: Retorna confirmação de exclusão
+        UseCase->>API: Fazenda deletada com sucesso
+        API-->>User: Retorna 200 OK com mensagem de sucesso
+    end

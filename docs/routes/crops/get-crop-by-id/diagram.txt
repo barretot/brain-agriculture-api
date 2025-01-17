@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/crops/${cropId})
+    participant UseCase as GetCropByIdUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição GET /api/crops/${cropId} (ID do usuário logado)
+    API->>UseCase: Solicita cultura pelo cropId e verifica se pertence ao usuário logado
+    UseCase->>DB: Consulta cultura pelo cropId e verifica o ID do usuário associado
+    DB-->>UseCase: Retorna cultura (se encontrada e válida) ou null
+    alt Cultura não encontrada ou não pertence ao usuário
+        UseCase->>API: Retorna erro (Cultura não encontrada)
+        API-->>User: Retorna 404 Not Found
+    else Cultura encontrada e pertence ao usuário
+        UseCase->>API: Retorna detalhes da cultura
+        API-->>User: Retorna 200 OK com os dados da cultura
+    end

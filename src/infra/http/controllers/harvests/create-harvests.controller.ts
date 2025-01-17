@@ -39,7 +39,7 @@ import { HttpBadRequestHarvestsResponse } from '../../swagger/responses/harvests
 export class CreateHarvestsController {
   constructor(private createHarvestsUseCase: CreateHarvestsUseCase) {}
 
-  @Post(':id')
+  @Post(':farmId')
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
   @ApiOperation({ summary: 'Create harvests from db' })
   @ApiCreatedResponse({
@@ -61,7 +61,7 @@ export class CreateHarvestsController {
   async handle(
     @CurrentUser() logedUser: TokenSchema,
     @Res() res,
-    @Param('id') farmId: string,
+    @Param('farmId') farmId: string,
     @Body() body: CreateHarvestsDto,
   ) {
     const response = await this.createHarvestsUseCase.execute({

@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/crops)
+    participant UseCase as GetAllCropsUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição GET /api/crops (ID do usuário logado)
+    API->>UseCase: Solicita todas as culturas (crops) associadas ao usuário logado
+    UseCase->>DB: Consulta todas as culturas vinculadas ao ID do usuário
+    DB-->>UseCase: Retorna lista de culturas
+    UseCase->>API: Retorna lista de culturas
+    API-->>User: Retorna 200 OK com a lista de culturas

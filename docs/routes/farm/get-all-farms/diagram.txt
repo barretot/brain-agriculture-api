@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/farm)
+    participant UseCase as GetFarmsUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição GET /api/farm (ID do usuário)
+    API->>UseCase: Solicita fazendas do usuário logado (ID fornecido)
+    UseCase->>DB: Busca todas as fazendas pelo ID do usuário
+    DB-->>UseCase: Retorna lista de fazendas
+    UseCase->>API: Retorna lista de fazendas
+    API-->>User: Retorna 200 OK com a lista de fazendas

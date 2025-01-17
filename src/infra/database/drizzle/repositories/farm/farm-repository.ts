@@ -64,8 +64,8 @@ export class DrizzleFarmRepository implements FarmRepository {
     const result = await this.drizzleService.db
       .select()
       .from(farms)
-      .innerJoin(farmOwner, eq(farms.id, farmOwner.farmId)) // Faz o join com a tabela farmOwner
-      .where(and(eq(farms.id, farmId), eq(farmOwner.userId, userId))); // Verifica se o userId corresponde
+      .innerJoin(farmOwner, eq(farms.id, farmOwner.farmId))
+      .where(and(eq(farms.id, farmId), eq(farmOwner.userId, userId)));
 
     if (result.length === 0) {
       return null;

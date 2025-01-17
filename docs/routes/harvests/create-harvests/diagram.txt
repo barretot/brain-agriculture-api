@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/harvests)
+    participant UseCase as CreateHarvestsUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição POST /api/harvests (payload + farmId no path)
+    API->>UseCase: Verifica se a fazenda (${farmId}) pertence ao usuário logado
+    UseCase->>DB: Consulta fazenda pelo farmId e verifica o ID do usuário associado
+    DB-->>UseCase: Retorna fazenda (se encontrada e válida) ou null
+    alt Fazenda não encontrada ou não pertence ao usuário
+        UseCase->>API: Retorna erro (Fazenda não encontrada)
+        API-->>User: Retorna 404 Not Found
+    else Fazenda encontrada e pertence ao usuário
+        UseCase->>DB: Insere nova safra (harvest) para a fazenda com os dados do payload
+        DB-->>UseCase: Retorna confirmação de criação
+        UseCase->>API: Safra criada com sucesso
+        API-->>User: Retorna 201 Created com detalhes da safra
+    end

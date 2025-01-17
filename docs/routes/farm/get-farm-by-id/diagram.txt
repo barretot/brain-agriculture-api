@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/farm/${farmId})
+    participant UseCase as GetFarmByIdUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição GET /api/farm/${farmId} (ID do usuário logado)
+    API->>UseCase: Solicita fazenda pelo ID (${farmId}) e verifica se pertence ao usuário
+    UseCase->>DB: Busca fazenda pelo farmId e verifica o ID do usuário associado
+    DB-->>UseCase: Retorna a fazenda (se encontrada e válida) ou null
+    alt Fazenda não encontrada ou não pertence ao usuário
+        UseCase->>API: Retorna erro (Fazenda não encontrada)
+        API-->>User: Retorna 404 Not Found
+    else Fazenda encontrada e pertence ao usuário
+        UseCase->>API: Retorna detalhes da fazenda
+        API-->>User: Retorna 200 OK com os dados da fazenda
+    end

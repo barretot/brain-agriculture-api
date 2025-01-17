@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/user)
+    participant UseCase as CreateUserUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição POST /api/user (payload)
+    API->>UseCase: Verifica email no banco de dados
+    UseCase->>DB: Consulta se email existe
+    DB-->>UseCase: Retorna resultado (email encontrado ou não)
+    alt Email existe
+        UseCase->>API: Retorna erro (Email já cadastrado)
+        API-->>User: Retorna 409 Conflict (Email já existe)
+    else Email não existe
+        UseCase->>DB: Verifica se CPF/CNPJ existe
+        DB-->>UseCase: Retorna resultado (CPF/CNPJ encontrado ou não)
+        alt CPF/CNPJ existe
+            UseCase->>API: Retorna erro (CPF/CNPJ já cadastrado)
+            API-->>User: Retorna 409 Conflict (CPF/CNPJ já existe)
+        else CPF/CNPJ não existe
+            UseCase->>DB: Cadastra o usuário no banco de dados
+            DB-->>UseCase: Retorna sucesso no cadastro
+            UseCase->>API: Cadastro realizado com sucesso
+            API-->>User: Retorna 201 Created
+        end
+    end

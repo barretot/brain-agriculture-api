@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant User as Usuário
+    participant API as API (Rota: /api/harvests/${harvestId})
+    participant UseCase as DeleteHarvestUseCase
+    participant DB as PostgreSQL
+
+    User->>API: Requisição DELETE /api/harvests/${harvestId} (ID do usuário logado)
+    API->>UseCase: Solicita remoção da safra pelo harvestId e verifica se pertence ao usuário
+    UseCase->>DB: Consulta safra pelo harvestId e verifica o ID do usuário associado
+    DB-->>UseCase: Retorna safra (se encontrada e válida) ou null
+    alt Safra não encontrada ou não pertence ao usuário
+        UseCase->>API: Retorna erro (Safra não encontrada)
+        API-->>User: Retorna 404 Not Found
+    else Safra encontrada e pertence ao usuário
+        UseCase->>DB: Deleta a safra pelo harvestId
+        DB-->>UseCase: Retorna confirmação de exclusão
+        UseCase->>API: Safra deletada com sucesso
+        API-->>User: Retorna 200 OK com mensagem de sucesso
+    end

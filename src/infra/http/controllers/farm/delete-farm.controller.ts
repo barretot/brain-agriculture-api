@@ -35,7 +35,7 @@ import { HttpDeletedFarmResponse } from '../../swagger/responses/farm/delete-far
 export class DeleteFarmController {
   constructor(private deleteFarmUseCase: DeleteFarmUseCase) {}
 
-  @Delete(':id')
+  @Delete(':farmId')
   @UseGuards(ApiKeyAuthGuard, JwtAuthGuard)
   @ApiOperation({ summary: 'Delete farm by id from db' })
   @ApiOkResponse({
@@ -53,11 +53,11 @@ export class DeleteFarmController {
   async handle(
     @Res() res,
     @CurrentUser() logedUser: TokenSchema,
-    @Param('id') id: string,
+    @Param('farmId') farmId: string,
   ) {
     const response = await this.deleteFarmUseCase.execute({
       userId: logedUser.sub,
-      farmId: id,
+      farmId,
     });
 
     if (response.isLeft()) {

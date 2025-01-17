@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./docs/img/logo.webp" width="200"  style="margin-bottom: 30px" alt="" />
   <br>
-  <img src="https://img.shields.io/badge/maintainer-Serasa%20-pink.svg" alt="Maintainer">
+  <img src="https://img.shields.io/badge/maintainer-Ruan Barreto%20-blue.svg" alt="Maintainer">
   <img src="https://img.shields.io/badge/version-1.0.0-orange.svg" alt="Version">
   <img src="https://img.shields.io/badge/NodeJS-22.12.0-green.svg" alt="NodeJS">
 

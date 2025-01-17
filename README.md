@@ -809,7 +809,7 @@ yarn
 
 ---
 
-### 3. **Inicie o banco de dados**
+### 3. **Inicie o banco de dados no docker**
 Suba o banco de dados em um contêiner Docker no modo em segundo plano:
 ```bash
 docker compose up -d
@@ -817,20 +817,7 @@ docker compose up -d
 
 ---
 
-### 4. **Gerar tabelas, migrations e popular o banco de dados**
-O caminho para as seed é esse aqui: [seeds](/src/infra/database/drizzle/seeds/run-seed.ts)
-
-1. **Gere as tabelas e aplique as migrations no banco de dados**:
-   ```bash
-   npm run drizzle:generate
-   npm run drizzle:push
-   ```
-
-2. **Popule o banco de dados com dados de exemplo (seed)**:
-   ```bash
-   npm run seed
-   ```
-### 5. **Criar arquivo .env com váriaveis de ambiente**
+### 4. **Criar arquivo .env com váriaveis de ambiente**
 Crie um arquivo .env na raiz do seu projeto com as seguintes variáveis:
 ```
 PORT=3333
@@ -841,8 +828,32 @@ JWT_PRIVATE_KEY=LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lH
 JWT_PUBLIC_KEY=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFtQzVpUWJsS0wvVTlZVHVwRlNyeQpXZWNBdTl1NUJaN0UwSThPalRiZ0l3czlzRGw4dCtYSGxFL09BTDU2UStxa3AyeENkZ3dMdmgxdGk2ZHNaRm1zCkZkR0N0T3F0Y3BpWUlYK3YwU0NSeTVMbHlOVnBSb3FPZGxEeXU1TmRIRmxiVDdjNTlES2lkdXZFMmc3NjQrU2MKZDJ4MDlLbXByeWJJcERSMnJqZjlXN21lYlN3elRqYzVoRExaRWwwamt6MFd5VW1lZURwVVNRVEQzUkQrRnRtMgp5QXB6dytETytQSlFCZEREZ1RqeStUK1oydjRTQTVaZkMrTm5FQWg1bnRoRVp2ZHZjYkY4WlJDd2h4eWxvRFZFCkd5OVRMTFovZFlJaTBCUjRsZGp3Z2FNSWdpK1lLRWxLdHpObFdaNURvd01xTStYcnFFblJBcGxPOTBrY3JkVnEKTXdJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==
 API_KEY=G5dNGLixUdy4xh4X2zWlSFVa8WVgPBwPGNCi0eX37Ws/OeHGsdBCdJS6X5AYkM/h0ldidFWfm0vyKw3HyL71zA==
 NODE_ENV=dev
-
 ```
+
+---
+
+### 5. **Gerar tabelas, migrations e popular o banco de dados**
+O caminho para as seed é esse aqui: [seeds](/src/infra/database/drizzle/seeds/run-seed.ts)
+
+1. **Gere as tabelas e aplique as migrations no banco de dados**:
+   ```bash
+   npm run drizzle:generate
+   npm run drizzle:push
+   ```
+
+2. **Se preferir, você pode popular o banco de dados com dados de exemplo usando uma seed**:
+   ```bash
+   npm run seed
+   ```
+3. **O Drizzle possui uma interface para visualizar o banco de dados**:
+   ```bash
+    npm run drizzle:studio
+   ```
+   Basta acessar o endereço que aparecer no seu terminal
+
+   ![drizzleStudio](/docs/img/d_studio.png)
+
+
 
 ### 6. **Inicie a aplicação**
 Execute a aplicação localmente:
@@ -864,7 +875,7 @@ Você será redirecionado automaticamente para a documentação **Swagger** da A
 
 Lembre-se de adicionar a API-KEY no swagger antes de começar a testar as rotas.
 ```
-API_KEY=G5dNGLixUdy4xh4X2zWlSFVa8WVgPBwPGNCi0eX37Ws/OeHGsdBCdJS6X5AYkM/h0ldidFWfm0vyKw3HyL71zA==
+G5dNGLixUdy4xh4X2zWlSFVa8WVgPBwPGNCi0eX37Ws/OeHGsdBCdJS6X5AYkM/h0ldidFWfm0vyKw3HyL71zA==
 ```
 
 1) Clique no botão **Auhtorize** na interface do Nest

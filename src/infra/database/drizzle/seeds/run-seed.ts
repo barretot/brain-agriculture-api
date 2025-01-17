@@ -37,7 +37,7 @@ async function seed() {
 
     const hashedPassword = await argon2.hash('password123');
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 3; i++) {
       const user1Id = randomUUID();
       const user2Id = randomUUID();
 
@@ -151,9 +151,8 @@ async function seed() {
         { id: harvestCrop1Id, harvestsId: harvest1Id, cropId: crop1Id },
         { id: harvestCrop2Id, harvestsId: harvest2Id, cropId: crop2Id },
       ]);
-
-      console.log('Seeding completed successfully!');
     }
+    console.log('Seeding completed successfully!');
   } catch (err) {
     console.error('Seeding failed:', err);
   } finally {

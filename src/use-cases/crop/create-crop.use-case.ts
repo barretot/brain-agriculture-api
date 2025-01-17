@@ -26,7 +26,7 @@ interface CreateCropUseCaseRequest {
 
 type CreateCropUseCaseResponse = Either<
   NotFoundHarvestsByIdException | LimitExceededException,
-  { harvests: string }
+  { crop: string }
 >;
 
 @Injectable()
@@ -57,7 +57,7 @@ export class CreateCropUseCase {
     }
 
     return right({
-      harvests: 'Crop created',
+      crop: 'Crop created',
     });
   }
 }

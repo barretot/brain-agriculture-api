@@ -9,5 +9,5 @@ export const users = pgTable('users', {
   email: text('email').notNull().unique(),
   cpfCnpj: text('cpf_cnpj').notNull().unique(),
   password: text('password').notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
 });

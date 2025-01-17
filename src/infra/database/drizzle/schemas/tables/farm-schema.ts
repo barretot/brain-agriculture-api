@@ -11,5 +11,5 @@ export const farms = pgTable('farm', {
   totalArea: doublePrecision('total_area').notNull(),
   arableArea: doublePrecision('arable_area').notNull(),
   vegetationArea: doublePrecision('vegetation_area').notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
 });

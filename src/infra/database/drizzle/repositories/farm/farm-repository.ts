@@ -59,6 +59,7 @@ export class DrizzleFarmRepository implements FarmRepository {
       farmId: props.id,
     });
   }
+
   async delete(userId: string, farmId: string): Promise<null | void> {
     const result = await this.drizzleService.db
       .select()
